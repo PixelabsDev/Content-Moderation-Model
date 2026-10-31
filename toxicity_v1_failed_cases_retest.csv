@@ -1,0 +1,12 @@
+﻿test_id,category,input_text,expected_label,observed_label,score,decision_layer,matched_rule,review,status,http_status,error,tested_at_utc
+17,Quoted/reported abuse,"The original comment said, ""You are an idiot."" I am quoting it only to document what was written.",Non-toxic,Non-toxic,0.3,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:03+00:00
+18,Quoted/reported abuse,The user reported that another person called him an idiot during the discussion. I am only describing what happened.,Non-toxic,Non-toxic,0.3,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:03+00:00
+20,Quoted/reported abuse,"A moderator removed the comment because it contained the word ""idiot"" directed at another user.",Non-toxic,Non-toxic,0.3,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:03+00:00
+21,Quoted/reported abuse,"The reported comment contained phrases such as ""you are stupid"" and ""shut up."" These are quoted as evidence.",Non-toxic,Non-toxic,0.3,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:03+00:00
+22,Quoted/reported abuse,"Someone wrote ""you are worthless and nobody likes you."" That statement was abusive and should not have been directed at anyone.",Non-toxic,Non-toxic,0.3,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:03+00:00
+29,Negation and intent,"I am not threatening you. I am explaining why the phrase ""you will regret this"" can sound threatening.",Non-toxic,Non-toxic,0.002152,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:03+00:00
+33,Threats without profanity,"Keep talking, and you will find out what happens next.",Toxic,Toxic,0.6,DistilBERT + Context Guard,,True,PASS,200,,2026-10-12T10:34:04+00:00
+36,Profanity without targeted abuse,"I forgot my fucking password again, so now I have to reset it.",Non-toxic,Non-toxic,0.005414,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:04+00:00
+37,Profanity without targeted abuse,What the hell happened to my computer? It was working perfectly yesterday.,Non-toxic,Non-toxic,0.3,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:04+00:00
+39,Profanity without targeted abuse,This damn application keeps crashing whenever I upload a large file.,Non-toxic,Non-toxic,0.3,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:04+00:00
+40,Profanity without targeted abuse,"The character shouted ""you bastard"" in the film, and the audience laughed at the scene.",Non-toxic,Non-toxic,0.3,DistilBERT Model,,False,PASS,200,,2026-10-12T10:34:04+00:00

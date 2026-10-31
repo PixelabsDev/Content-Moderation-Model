@@ -1,0 +1,21 @@
+{
+  "summary": {
+    "model_path": "distilbert_moderation_v4_new_int8.onnx",
+    "total_cases": 352,
+    "passed": 352,
+    "failed": 0,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "macro_f1": 1.0,
+    "roc_auc": 1.0,
+    "avg_cpu_latency_ms": 9.65,
+    "p95_cpu_latency_ms": 12.71,
+    "historical_battery_accuracy": 1.0,
+    "false_positives_count": 0,
+    "false_negatives_count": 0
+  },
+  "false_positives": [],
+  "false_negatives": [],
+  "all_failures": []
+}
