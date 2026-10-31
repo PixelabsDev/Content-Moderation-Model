@@ -1,7 +1,7 @@
 """
 Content Moderation Model — FastAPI inference server (for Render.com).
 
-v4.1 pipeline (DistilBERT + context-aware deterministic layers):
+v5 pipeline (DistilBERT v5 + context-aware deterministic layers):
   1. profanity wordlist (deterministic, v1.4.1) — with de-obfuscation
      normalization (leetspeak, fullwidth/homoglyphs, elongation, spaced
      single letters, zero-width chars)
@@ -45,12 +45,12 @@ TOKENIZER_CONFIG_PATH = "tokenizer_config.json"
 TOKENIZER_CONFIG_SIZE = 351
 TOKENIZER_CONFIG_SHA256 = "e1c2a61a99bda00f6c55303a210b30e2f92dcf8b555e215812e2eb583e177ffd"
 RELEASE_BASE_URL = (
-    "https://github.com/Vishalkumar-acad/Content-Moderation-Model/"
-    "releases/download/model-v4/"
+    "https://github.com/PixelabsDev/Content-Moderation-Model/"
+    "releases/download/v4.0.0/"
 )
 MAX_LEN = 128
 
-app = FastAPI(title="Content Moderation Model", version="2.1.0")
+app = FastAPI(title="Content Moderation Model", version="5.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -388,7 +388,7 @@ load_model()
 def health() -> dict:
     return {
         "service": "content-moderation-model",
-        "version": "2.1.0 (DistilBERT v4.1 + context layers)",
+        "version": "5.0.0 (DistilBERT v5 + context layers)",
         "status": "ok" if (tokenizer is not None and session is not None) else "degraded",
         "tokenizer_loaded": tokenizer is not None,
         "model_loaded": session is not None,
