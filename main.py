@@ -35,18 +35,18 @@ from pydantic import BaseModel, Field
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("content-moderation")
 
-MODEL_PATH = "distilbert_moderation_v4_int8.onnx"
+MODEL_PATH = "distilbert_moderation_v5_int8.onnx"
 MODEL_SIZE = 67_363_629
-MODEL_SHA256 = "f761f27be46c78c404e099a9bc797c043c076734b398d5073b4167bbcb7c2c56"
+MODEL_SHA256 = "235a22fcd143a5f7696acceb8c3833ded9cc63306ff8f0f45ebf6d71cc039ced"
 TOKENIZER_PATH = "tokenizer.json"
-TOKENIZER_SIZE = 711_649
-TOKENIZER_SHA256 = "91f1def9b9391fdabe028cd3f3fcc4efd34e5d1f08c3bf2de513ebb5911a1854"
+TOKENIZER_SIZE = 711_396
+TOKENIZER_SHA256 = "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66"
 TOKENIZER_CONFIG_PATH = "tokenizer_config.json"
 TOKENIZER_CONFIG_SIZE = 351
 TOKENIZER_CONFIG_SHA256 = "e1c2a61a99bda00f6c55303a210b30e2f92dcf8b555e215812e2eb583e177ffd"
 RELEASE_BASE_URL = (
     "https://github.com/PixelabsDev/Content-Moderation-Model/"
-    "releases/download/v4.0.0/"
+    "releases/download/v5.0.0/"
 )
 MAX_LEN = 128
 
@@ -88,15 +88,16 @@ _SLUR_RE = re.compile(
 # Expletives / intensifiers: abusive only when directed at a person
 # ("fuck you"), not as a filler ("this fucking traffic").
 _EXPLETIVE_RE = re.compile(
-    r"\b(?:fuck|fucked|fucker|fuckers|fucking|shit|shits|shitty|bullshit|horseshit|crap|"
-    r"hell|damn|darn|bloody|heck|freaking)\b",
+    r"\b(?:fuck|fucked|fucker|fuckers|fucking|shit|shits|shitty|bullshit|horseshit|crap|crappy|"
+    r"hell|damn|goddamn|goddamned|darn|bloody|heck|freaking)\b",
     re.IGNORECASE,
 )
-# Constructions that are always directed abuse.
+# Constructions that are always directed abuse or severe profanity.
 _DIRECTED_RE = re.compile(
     r"\bfuck\s+(?:you|u|off)\b|\bshut\s+(?:the\s+fuck\s+)?up\b|\bstfu\b|"
     r"\b(?:fuck|fucking|shit|shitty|bullshit)\s+(?:ridiculous|stupid|absurd|awful|useless|"
-    r"pathetic|horrible|garbage|nonsense|joke)\b",
+    r"pathetic|horrible|garbage|nonsense|joke)\b|"
+    r"\b(?:complete|total|pure|absolute)\s+(?:horseshit|bullshit)\b",
     re.IGNORECASE,
 )
 _HARASSMENT_RES = [
@@ -131,6 +132,7 @@ _THREAT_STRONG_RES = [
         r"\b(?:i'?ll|i\s+will)\s+make\s+you\s+pay\b",
         r"\byou\s+(?:'?re|are)\s+(?:dead|done\s+for)\b",
         r"\bwatch\s+your\s+back\b",
+        r"\b(?:you\s+better|better)\s+hope\b",
     )
 ]
 _THREAT_WEAK_RES = [
@@ -207,6 +209,15 @@ def _model_context(text, spans):
                 amb = True
             else:
                 return None          # unguarded insult/slur -> let the model decide
+    for m in _DIRECTED_RE.finditer(text):
+        found = True
+        ctx = _context(text, m.start(), m.end(), spans)
+        if ctx == "clear":
+            clear = True
+        elif ctx == "ambiguous":
+            amb = True
+        else:
+            return None              # unguarded directed abuse -> let deterministic/model decide
     for m in _EXPLETIVE_RE.finditer(text):
         found = True
         ctx = _context(text, m.start(), m.end(), spans)

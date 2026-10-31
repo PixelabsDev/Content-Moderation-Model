@@ -1,9 +1,13 @@
 # Model weight files are released as assets, not tracked in git
 *.onnx
 data_v4/
+data_v5/
 tokenizer.json
 tokenizer_new.json
+tokenizer_v5.json
 tokenizer_config.json
+tokenizer_config_v5.json
+report_*.json
 *.tmp
 __pycache__/
 *.pyc
